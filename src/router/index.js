@@ -38,23 +38,16 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/example',
+    path: '/table',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: '/table',
+    name: 'table',
     children: [
       {
-        path: 'table',
+        path: '/table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: { title: '报修管理', icon: 'table' }
       }
     ]
   },
