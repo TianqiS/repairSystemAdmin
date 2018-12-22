@@ -2,10 +2,10 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/user/login',
+    url: '/common/adminLogin',
     method: 'post',
     data: {
-      username,
+      userName: username,
       password
     }
   })
