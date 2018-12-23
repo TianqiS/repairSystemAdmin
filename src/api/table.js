@@ -7,3 +7,11 @@ export function getList(params) {
     params
   })
 }
+
+export function getRepairmanList(params) {
+  return request({
+    url: '/admin/repairmanList',
+    method: 'get',
+    params
+  })
+}
