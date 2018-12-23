@@ -9,33 +9,44 @@
       highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Title">
+      <el-table-column label="设备编号" width="110" align="center">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.device_id }}
         </template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column label="报修用户" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.userInfo.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
+      <el-table-column label="修理工人" width="110" align="center">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          {{ scope.row.repairmanInfo.name || '无' }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column label="报修详情" >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          {{ scope.row.detail }}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column class-name="status-col" label="报修状态" width="110" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.log_status | statusFilter">{{ scope.row.log_status === 1? '已修复' : '维修中' }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="repair_time" label="报修时间" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time"/>
-          <span>{{ scope.row.display_time }}</span>
+          <span>{{ scope.row.repair_time }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="finish_time" label="结束时间" width="200">
+        <template slot-scope="scope">
+          <i class="el-icon-time"/>
+          <span>{{ scope.row.finish_time || '未完成' }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -49,9 +60,9 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
+        "1": 'success',
+        // draft: 'gray',
+        "-1": 'danger'
       }
       return statusMap[status]
     }
@@ -68,8 +79,9 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
-        this.list = response.data.items
+      getList({}).then(response => {
+        console.log(response)
+        this.list = response.list
         this.listLoading = false
       })
     }
