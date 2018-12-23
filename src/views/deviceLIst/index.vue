@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { getDeviceList, getRepairmanList } from '@/api/deviceList'
+import { getDeviceList, getRepairmanList, updateDevice } from '@/api/deviceList'
 
 export default {
   filters: {
@@ -142,6 +142,7 @@ export default {
       this.listLoading = true
       getDeviceList({}).then(response => {
         this.list = response.list
+        console.log(this.list)
         this.listLoading = false
       })
       getRepairmanList({}).then(response => {
@@ -151,7 +152,21 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
+          const statusMap = {
+            '正常': 1,
+            '故障': -1
+          }
           console.log(this.deviceDetail)
+          if (!(this.deviceDetail.status * 1)) this.deviceDetail.status = statusMap[this.deviceDetail.status]
+          updateDevice(this.deviceDetail)
+          this.dialogFormVisible = false
+          this.$router.go(0)
+          this.$notify({
+            title: '成功',
+            message: '更新成功',
+            type: 'success',
+            duration: 2000
+          })
         }
       })
     },

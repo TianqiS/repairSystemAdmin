@@ -15,3 +15,11 @@ export function getRepairmanList(params) {
     params
   })
 }
+
+export function updateDevice(deviceInfo) {
+  return request({
+    url: '/admin/editDevice',
+    method: 'post',
+    data: deviceInfo
+  })
+}
