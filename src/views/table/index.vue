@@ -52,14 +52,6 @@
     </el-table>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="repairDetail" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <!--<el-form-item label="$t('table.type')" prop="type">-->
-          <!--<el-select v-model="repairDetail.type" class="filter-item" placeholder="Please select">-->
-            <!--<el-option v-for="item in calendarTypeOptions" :key="item.key" label="item.display_name" :value="item.key"/>-->
-          <!--</el-select>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item label="设备编号" prop="device_id">-->
-          <!--<el-date-picker v-model="repairDetail.device_id" type="datetime" placeholder="Please pick a date"/>-->
-        <!--</el-form-item>-->
         <el-form-item label="设备编号" prop="deviceId">
           <el-input v-model="repairDetail.device_id"/>
         </el-form-item>
