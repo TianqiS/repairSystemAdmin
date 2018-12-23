@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column label="修理工人" width="110" align="center">
         <template slot-scope="scope">
-          {{ scope.row.repairmanInfo.name || '无' }}
+          {{ scope.row.repairmanInfo? scope.row.repairmanInfo.name : '无' }}
         </template>
       </el-table-column>
       <el-table-column label="报修详情" >
@@ -127,6 +127,7 @@ export default {
       this.listLoading = true
       getList({}).then(response => {
         this.list = response.list
+        console.log(this.list)
         this.listLoading = false
       })
       getRepairmanList({}).then(response => {

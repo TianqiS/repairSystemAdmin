@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column label="维护人员" >
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.name || '无' }}
         </template>
       </el-table-column>
       <el-table-column label="生厂商" >
