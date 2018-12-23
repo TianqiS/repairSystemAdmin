@@ -72,12 +72,6 @@
         <el-form-item label="结束时间" prop="finishTime">
           <el-input v-model="repairDetail.finish_time"/>
         </el-form-item>
-        <!--<el-form-item label="$t('table.importance')">-->
-          <!--<el-rate v-model="repairDetail.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;"/>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item label="$t('table.remark')">-->
-          <!--<el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="repairDetail.remark" type="textarea" placeholder="Please input"/>-->
-        <!--</el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">关闭</el-button>
