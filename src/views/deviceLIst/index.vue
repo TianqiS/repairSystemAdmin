@@ -42,6 +42,11 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
+      <el-table-column label="生厂商" >
+        <template slot-scope="scope">
+          {{ scope.row.producer }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="repair_time" label="创建时间" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time"/>
@@ -55,26 +60,35 @@
       </el-table-column>
     </el-table>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="repairDetail" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :model="deviceDetail" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备编号" prop="deviceId">
-          <el-input v-model="repairDetail.device_id"/>
+          <el-input v-model="deviceDetail.deviceId"/>
         </el-form-item>
-        <el-form-item label="报修用户" prop="userName">
-          <el-input v-model="repairDetail.userInfo.name"/>
+        <el-form-item label="设备类型" prop="deviceType">
+          <el-input v-model="deviceDetail.deviceType"/>
         </el-form-item>
         <el-form-item label="修理工人" prop="repairmanName">
-          <el-select v-model="repairDetail.repairmanInfo.name" class="filter-item" placeholder="Please select">
+          <el-select v-model="deviceDetail.repairmanName" class="filter-item" placeholder="Please select">
             <el-option v-for="repairman in repairmanList" :key="repairman.staff_id" :label="repairman.name" :value="repairman.name"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="报修详情" prop="detail">
-          <el-input v-model="repairDetail.detail"/>
+        <el-form-item label="使用单位" prop="useUnit">
+          <el-input v-model="deviceDetail.useUnit"/>
         </el-form-item>
-        <el-form-item label="报修时间" prop="repairTime">
-          <el-input v-model="repairDetail.repair_time"/>
+        <el-form-item label="生产商" prop="producer">
+          <el-input v-model="deviceDetail.producer"/>
         </el-form-item>
-        <el-form-item label="结束时间" prop="finishTime">
-          <el-input v-model="repairDetail.finish_time"/>
+        <el-form-item label="序列号" prop="serialNumber">
+          <el-input v-model="deviceDetail.serialNumber"/>
+        </el-form-item>
+        <el-form-item label="使用地址" prop="location">
+          <el-input v-model="deviceDetail.location"/>
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select v-model="deviceDetail.status" class="filter-item" placeholder="Please select">
+            <el-option key="1" label="正常" value="1"/>
+            <el-option key="-1" label="故障" value="-1"/>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -107,17 +121,15 @@ export default {
       },
       dialogFormVisible: false,
       dialogStatus: '',
-      repairDetail: {
-        device_id: '',
-        userInfo: {
-          name: ''
-        },
-        repairmanInfo: {
-          name: ''
-        },
-        detail: '',
-        repair_time: '',
-        finish_time: ''
+      deviceDetail: {
+        deviceId: '',
+        deviceType: '',
+        useUnit: '',
+        producer: '',
+        serialNumber: '',
+        location: '',
+        repairmanName: '',
+        status: ''
       },
       repairmanList: []
     }
@@ -139,12 +151,21 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          console.log(this.repairDetail)
+          console.log(this.deviceDetail)
         }
       })
     },
     handleUpdate(row) {
-      this.repairDetail = Object.assign({}, this.repairDetail, { ...row })
+      this.deviceDetail = Object.assign({}, this.deviceDetail, {
+        deviceId: row.id,
+        deviceType: row.device_type,
+        useUnit: row.use_unit,
+        producer: row.producer,
+        serialNumber: row.serial_number,
+        location: row.location,
+        repairmanName: row.name,
+        status: row.status === 1 ? '正常' : '故障'
+      })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
