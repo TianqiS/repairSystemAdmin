@@ -15,3 +15,16 @@ export function getRepairmanList(params) {
     params
   })
 }
+
+export function setRepairman(logId, repairmanName, deviceId) {
+  console.log(repairmanName)
+  return request({
+    url: '/admin/setRepairman',
+    method: 'post',
+    data: {
+      logId,
+      repairmanName,
+      deviceId
+    }
+  })
+}

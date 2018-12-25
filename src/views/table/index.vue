@@ -53,10 +53,10 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="repairDetail" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备编号" prop="deviceId">
-          <el-input v-model="repairDetail.device_id"/>
+          <el-input v-model="repairDetail.device_id" disabled="true"/>
         </el-form-item>
         <el-form-item label="报修用户" prop="userName">
-          <el-input v-model="repairDetail.userInfo.name"/>
+          <el-input v-model="repairDetail.userInfo.name" disabled="true"/>
         </el-form-item>
         <el-form-item label="修理工人" prop="repairmanName">
           <el-select v-model="repairDetail.repairmanInfo.name" class="filter-item" placeholder="Please select">
@@ -64,13 +64,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="报修详情" prop="detail">
-          <el-input v-model="repairDetail.detail"/>
+          <el-input v-model="repairDetail.detail" disabled="true"/>
         </el-form-item>
         <el-form-item label="报修时间" prop="repairTime">
-          <el-input v-model="repairDetail.repair_time"/>
+          <el-input v-model="repairDetail.repair_time" disabled="true"/>
         </el-form-item>
         <el-form-item label="结束时间" prop="finishTime">
-          <el-input v-model="repairDetail.finish_time"/>
+          <el-input v-model="repairDetail.finish_time" disabled="true"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { getList, getRepairmanList } from '@/api/table'
+import { getList, getRepairmanList, setRepairman } from '@/api/table'
 
 export default {
   filters: {
@@ -137,7 +137,15 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          console.log(this.repairDetail)
+          setRepairman(this.repairDetail.log_id, this.repairDetail.repairmanInfo.name, this.repairDetail.device_id).then(() => {
+            this.$router.go(0)
+            this.$notify({
+              title: '成功',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
         }
       })
     },
