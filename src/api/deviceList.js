@@ -23,3 +23,11 @@ export function updateDevice(deviceInfo) {
     data: deviceInfo
   })
 }
+
+export function deleteDevice(deviceId) {
+  return request({
+    url: '/admin/deleteDevice',
+    method: 'post',
+    data: { deviceId }
+  })
+}

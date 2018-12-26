@@ -14,7 +14,7 @@
       </el-table-column>
       <el-table-column label="设备编号" width="110" align="center">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.id }}</span>
+          <span class="link-type">{{ scope.row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="设备类型" width="110" align="center">
@@ -58,6 +58,12 @@
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status === 1? '正常' : '故障' }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button type="primary" plain size="small" @click="handleUpdate(scope.row)" >编辑</el-button>
+          <el-button type="danger" plain size="small" @click="deleteDevice(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="deviceDetail" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
@@ -68,7 +74,7 @@
           <el-input v-model="deviceDetail.deviceType"/>
         </el-form-item>
         <el-form-item label="修理工人" prop="repairmanName">
-          <el-select v-model="deviceDetail.repairmanName" class="filter-item" placeholder="Please select">
+          <el-select v-model="deviceDetail.repairmanName" class="filter-item" placeholder="Please select" clearable>
             <el-option v-for="repairman in repairmanList" :key="repairman.staff_id" :label="repairman.name" :value="repairman.name"/>
           </el-select>
         </el-form-item>
@@ -100,7 +106,12 @@
 </template>
 
 <script>
-import { getDeviceList, getRepairmanList, updateDevice } from '@/api/deviceList'
+import {
+  getDeviceList,
+  getRepairmanList,
+  updateDevice,
+  deleteDevice
+} from '@/api/deviceList'
 
 export default {
   filters: {
@@ -185,6 +196,17 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    deleteDevice(row) {
+      deleteDevice(row.id).then(() => {
+        this.fetchData()
+        return this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
       })
     }
   }
