@@ -14,7 +14,7 @@
       </el-table-column>
       <el-table-column label="设备编号" width="110" align="center">
         <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.device_id }}</span>
+          <span>{{ scope.row.device_id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="报修用户" width="110" align="center">
@@ -47,6 +47,12 @@
         <template slot-scope="scope">
           <i class="el-icon-time"/>
           <span>{{ scope.row.finish_time || '未完成' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button type="primary" plain size="small" @click="handleUpdate(scope.row)" >编辑</el-button>
+          <el-button type="danger" plain size="small" @click="deleteRepairLog(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -82,7 +88,12 @@
 </template>
 
 <script>
-import { getList, getRepairmanList, setRepairman } from '@/api/table'
+import {
+  getList,
+  getRepairmanList,
+  setRepairman,
+  deleteLog
+} from '@/api/table'
 
 export default {
   filters: {
@@ -127,7 +138,6 @@ export default {
       this.listLoading = true
       getList({}).then(response => {
         this.list = response.list
-        console.log(this.list)
         this.listLoading = false
       })
       getRepairmanList({}).then(response => {
@@ -138,13 +148,14 @@ export default {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           setRepairman(this.repairDetail.log_id, this.repairDetail.repairmanInfo.name, this.repairDetail.device_id).then(() => {
-            this.$router.go(0)
             this.$notify({
               title: '成功',
               message: '更新成功',
               type: 'success',
               duration: 2000
             })
+            this.fetchData()
+            this.dialogFormVisible = false
           })
         }
       })
@@ -155,6 +166,17 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    deleteRepairLog(row) {
+      deleteLog(row.log_id).then(() => {
+        this.fetchData()
+        return this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
       })
     }
   }

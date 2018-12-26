@@ -17,7 +17,6 @@ export function getRepairmanList(params) {
 }
 
 export function setRepairman(logId, repairmanName, deviceId) {
-  console.log(repairmanName)
   return request({
     url: '/admin/setRepairman',
     method: 'post',
@@ -26,5 +25,13 @@ export function setRepairman(logId, repairmanName, deviceId) {
       repairmanName,
       deviceId
     }
+  })
+}
+
+export function deleteLog(logId) {
+  return request({
+    url: '/admin/deleteRepairlog',
+    method: 'post',
+    data: { logId }
   })
 }
