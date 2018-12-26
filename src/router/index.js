@@ -79,12 +79,14 @@ export const constantRouterMap = [
   },
 
   {
-    path: 'external-link',
+    path: '/repairmanList',
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: '/repairmanList',
+        name: 'repairmanList',
+        component: () => import('@/views/repairmanList/index'),
+        meta: { title: '维修人员', icon: 'user' }
       }
     ]
   },
